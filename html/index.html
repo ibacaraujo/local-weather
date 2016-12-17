@@ -1,0 +1,86 @@
+<html>
+<head>
+		<!-- Google Fonts -->
+		<link href="https://fonts.googleapis.com/css?family=Bungee+Shade|Lobster|Abel|Quicksand|Open+Sans+Condensed|Poiret+One|Raleway+Dots|Pacifico|Londrina+Shadow" rel="stylesheet">
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+		<!-- jQuery library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+		<!-- Latest compiled JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		
+		<!-- Style for the page -->
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+
+		<!-- Font awesome -->
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+	<div id="front" class="container-fluid fronts">
+		<h2 id="head">Local Weather App</h2>
+		<h1 id="city"><i class="fa fa-thumb-tack" aria-hidden="true"></i> </h1>
+		<h1 id="temp"><i class="fa fa-thermometer-empty" aria-hidden="true"></i> </h1>
+		<h1 id="condition"></h1>
+		<div id="icon"></div>
+	</div>
+	
+	<div class="container-fluid foot">
+		<div class="row col-md-12">
+			<h3 id="say">jolieteam@jolie.com</h3>
+			<div id="say">
+				<a id="social" href="https://twitter.com/jolieteam"class="sc twitter btn btn-twitter btn-primary twit"><i class="fa fa-twitter"></i></a>
+				<a id="social" href="https://plus.google.com/u/0/107284327426088035025/posts" class="sc btn btn-googleplus btn-danger"><i class="fa fa-google-plus"></i></a>   
+				<a id="social" href="https://br.linkedin.com/in/jorsiramos" class="sc btn btn-linkedin btn-primary" ><i class="fa fa-linkedin"></i></a>   
+			</div>
+		</div>	
+	</div>
+
+</body>
+
+<script>
+
+
+	$( document ).ready(function() {	
+	
+		var api_key = '5ab56f9a06f78726156f2680d978da6e';
+		var ipJSON = 'http://ip-api.com/json/';
+		 $.getJSON(ipJSON).done(function(loc){
+				var lat = loc.lat;
+				var lon = loc.lon;
+				console.log(lat);
+				$("#city").append(loc.city + ', ' + loc.country);
+				var weatherUrl = 'http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + "&APPID=" + api_key;
+				$.getJSON(weatherUrl).done(function(weather){
+					$("#temp").append((weather.main.temp - 273.15).toFixed(2) + '°');
+					$("#condition").append(weather.weather[0].description);
+					console.log("condition" + weather.weather[0].description);
+					$("#icon").append("<img src='http://openweathermap.org/img/w/" + weather.weather[0].icon + ".png'>");
+					var condition = document.getElementById("condition").innerHTML;
+					if(condition=="clear sky") {
+						$('#front').css("background-image", "url(https://crystalseye.files.wordpress.com/2011/08/dsc_0724.jpg)");
+					} else if(condition=="rain") {
+						$('#front').css("background-image", "url(https://images4.alphacoders.com/831/thumb-1920-83196.jpg)");
+					} else if(condition=="snow") {
+						$('#front').css("background-image", "url(http://shushi168.com/data/out/209/36958968-snow-images.jpg)");
+					} else if(condition=="extreme") {
+						$('#front').css("background-image", "url(http://images.huffingtonpost.com/2013-09-10-1229v1_20121029SandyApproach.png)");
+					} else if(condition=="mist") {
+						$('#front').css("background-image", "url(http://www.zastavki.com/pictures/originals/2014/Nature___Forest_The_forest_in_the_morning_mist_056259_.jpg)");
+						
+					}
+				},
+				"jsonp");
+			},
+			 "jsonp");
+		});
+		
+
+</script>
+
+
+</html>
